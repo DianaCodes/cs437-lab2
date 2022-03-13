@@ -1,6 +1,6 @@
 import socket
 
-HOST = "192.168.3.49" # IP address of your Raspberry PI
+HOST = "10.0.0.10" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -13,8 +13,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print("server recv from: ", clientInfo)
             data = client.recv(1024)      # receive 1024 Bytes of message in binary format
             if data != b"":
-                print(data)     
-                client.sendall(data) # Echo back to client
+                print(data)  
+                if data == "F":
+                    # move car forward
+                elif data == "R":
+                    # move car right
+                elif data == "L":
+                    # move car left
+                elif data == "B":
+                    # move car backwards
+                elif data == "S":
+                    # stop car
+                elif data == "Stats":
+                    # get car stats
+                    client.sendall(data) # Echo back to client
     except: 
         print("Closing socket")
         client.close()

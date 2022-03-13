@@ -1,6 +1,6 @@
 import bluetooth
 
-hostMACAddress = "DC:A6:32:80:7D:87" # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
+hostMACAddress = "10.0.0.10" # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
 port = 0
 backlog = 1
 size = 1024
@@ -15,9 +15,20 @@ try:
         data = client.recv(size)
         if data:
             print(data)
-            client.send(data) # Echo back to client
+            if data == "F":
+                # move car forward
+            elif data == "R":
+                # move car right
+            elif data == "L":
+                # move car left
+            elif data == "B":
+                # move car backwards
+            elif data == "S":
+                # stop car
+            elif data == "Stats":
+                # get car stats
+                client.send(data) # Echo back to client
 except: 
     print("Closing socket")
     client.close()
     s.close()
-

@@ -2,10 +2,9 @@ document.onkeydown = updateKey;
 document.onkeyup = resetKey;
 
 var server_port = 65432;
-var server_addr = "192.168.3.49";   // the IP address of your Raspberry PI
+var server_addr = "10.0.0.10";   // the IP address of your Raspberry PI
 
-function client(){
-    
+function client(param){
     const net = require('net');
     var input = document.getElementById("message").value;
 
@@ -13,11 +12,14 @@ function client(){
         // 'connect' listener.
         console.log('connected to server!');
         // send the message
-        client.write(`${input}\r\n`);
+        //client.write(`${input}\r\n`);
+        client.write(param);
     });
     
     // get the data from the server
     client.on('data', (data) => {
+        // TODO: return list of data for stats
+        // TODO: set text of the stats to returned list elements
         document.getElementById("bluetooth").innerHTML = data;
         console.log(data.toString());
         client.end();
@@ -27,13 +29,10 @@ function client(){
     client.on('end', () => {
         console.log('disconnected from server');
     });
-
-
 }
 
 // for detecting which key is been pressed w,a,s,d
 function updateKey(e) {
-
     e = e || window.event;
 
     if (e.keyCode == '87') {
@@ -60,7 +59,6 @@ function updateKey(e) {
 
 // reset the key to the start state 
 function resetKey(e) {
-
     e = e || window.event;
 
     document.getElementById("upArrow").style.color = "grey";
@@ -74,6 +72,6 @@ function resetKey(e) {
 function update_data(){
     setInterval(function(){
         // get image from python server
-        client();
+        client('Stats');
     }, 50);
 }
