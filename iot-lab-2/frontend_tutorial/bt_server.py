@@ -7,7 +7,7 @@ from picar_4wd.pin import Pin
 
 ########################################################
 # Motors
-speed = 50
+speed = 100
 
 left_front = Motor(PWM("P13"), Pin("D4"), is_reversed=True) # motor 1
 right_front = Motor(PWM("P12"), Pin("D5"), is_reversed=True) # motor 2
@@ -46,8 +46,8 @@ def stop():
 
 ########################################################
 # Bluetooth
-hostMACAddress = "10.0.0.10" # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
-port = 0
+hostMACAddress = "E4:5F:01:70:FC:F3" # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
+port = 1
 backlog = 1
 size = 1024
 s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)

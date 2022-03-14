@@ -1,5 +1,6 @@
 import socket
 import subprocess as sp
+import time
 import picar_4wd as fc
 from picar_4wd.motor import Motor
 from picar_4wd.pwm import PWM
@@ -47,8 +48,8 @@ def stop():
 ########################################################
 # Wifi
 HOST = "10.0.0.10" # IP address of your Raspberry PI
-PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
-
+PORT = 65482          # Port to listen on (non-privileged ports are > 1023)
+direction = "None"
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
@@ -59,7 +60,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print("server recv from: ", clientInfo)
             data = client.recv(1024)      # receive 1024 Bytes of message in binary format
             if data != b"":
-                print(data)
+                print(data.decode())
+                data = data.decode()
                 if data == "F":
                     # move car forward
                     direction = "Forward"
@@ -69,11 +71,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     direction = "Right"
                     turn_right(speed)
                     time.sleep(1.4)
+                    stop()
+                    direction = "None"
                 elif data == "L":
                     # move car left
                     direction = "Left"
                     turn_left(speed)
                     time.sleep(1.4)
+                    stop()
+                    direction = "None"
                 elif data == "B":
                     # move car backwards
                     direction = "Backwards"
@@ -88,9 +94,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     if "C0:3C:59:8C:17:BA" in stdoutdata.split():
                         paired = "C0:3C:59:8C:17:BA Bluetooth device is paired"
                     else:
-                        paried = "C0:3C:59:8C:17:BA Bluetooth device not paired"
-                    statsList = [str(speed),direction,paired]
-                    client.sendall(statsList) # Echo back to client
+                        paired = "C0:3C:59:8C:17:BA Bluetooth device not paired"
+                    stats = str(speed)+","+direction+","+paired
+                    print(stats)
+                    lis = stats.encode()
+                    client.sendall(lis) # Echo back to client
     except: 
         print("Closing socket")
         client.close()
