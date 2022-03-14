@@ -20,7 +20,9 @@ function client(param){
     client.on('data', (data) => {
         // TODO: return list of data for stats
         // TODO: set text of the stats to returned list elements
-        document.getElementById("bluetooth").innerHTML = data;
+        document.getElementById("direction_dot").innerHTML = data[1];
+        document.getElementById("speed_dot").innerHTML = data[0];
+        document.getElementById("bluetooth").innerHTML = data[2];
         console.log(data.toString());
         client.end();
         client.destroy();
