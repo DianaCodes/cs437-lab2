@@ -70,11 +70,13 @@ try:
                 direction = "Right"
                 turn_right(speed)
                 time.sleep(1.4)
+                stop()
             elif data == "L":
                 # move car left
                 direction = "Left"
                 turn_left(speed)
                 time.sleep(1.4)
+                stop()
             elif data == "B":
                 # move car backwards
                 direction = "Backwards"
